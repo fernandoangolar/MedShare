@@ -19,7 +19,7 @@ public class SpringSecurityConfig {
 
     private static final String[] DOCUMENTATION_OPENAPI = {
             "/docs/index.html",
-            "/docs-park.html", "/docs-park/**",
+            "/docs-medshare.html", "/docs-medshare/**",
             "/v3/api-docs/**",
             "/swagger-ui-custom.html", "/swagger-ui.html", "/swagger-ui/**",
             "/**.html", "/webjars/**", "/configuration/**", "/swagger-resources/**"
@@ -34,6 +34,7 @@ public class SpringSecurityConfig {
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(DOCUMENTATION_OPENAPI).permitAll()
                         .anyRequest().authenticated()
                 ).sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
