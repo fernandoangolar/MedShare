@@ -14,6 +14,9 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
+
     @Column(name = "email", length = 100, unique = true, nullable = false)
     private String email;
 
@@ -31,14 +34,16 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public User(String email, String password, Role role) {
+    public User(String name, String email, String password, Role role) {
+        this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
     }
 
-    public User(String id, String email, String password, Role role) {
+    public User(String id, String name, String email, String password, Role role) {
         this.id = id;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -50,6 +55,14 @@ public class User implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
