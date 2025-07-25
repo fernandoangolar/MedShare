@@ -19,6 +19,9 @@ public class RegisterUserUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserMapper mapper;
+
     @Transactional
     public RegisterResponse execute(RegisterRequest request) {
 
@@ -26,11 +29,11 @@ public class RegisterUserUseCase {
             throw new RuntimeException("Já existe um usuário com este email");
         }
 
-        User user = UserMapper.toUser(request);
+        User user = mapper.toUser(request);
 
         user.setPassword(passwordEncoder.encode(request.password()));
         user = repository.save(user);
 
-        return UserMapper.toResponse(user);
+        return mapper.toResponse(user);
     }
 }

@@ -4,11 +4,12 @@ import ao.com.angotech.application.dtos.auth.RegisterRequest;
 import ao.com.angotech.application.dtos.auth.RegisterResponse;
 import ao.com.angotech.domain.entitiy.User;
 import ao.com.angotech.domain.enuns.Role;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class UserMapper {
 
-    public static User toUser(RegisterRequest request) {
+    public User toUser(RegisterRequest request) {
 
         User user = new User();
         user.setName(request.name());
@@ -20,7 +21,7 @@ public class UserMapper {
         return user;
     }
 
-    public static RegisterResponse toResponse(User user) {
+    public RegisterResponse toResponse(User user) {
 
         return new RegisterResponse(
                 user.getName(),
