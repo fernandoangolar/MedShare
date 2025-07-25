@@ -1,8 +1,9 @@
 package ao.com.angotech.application.dtos.auth;
 
-public record RegisterResponse(
+public record LoginResponse (
 
         String id,
         String name,
-        String email
+        String email,
+        String token
 ) { }

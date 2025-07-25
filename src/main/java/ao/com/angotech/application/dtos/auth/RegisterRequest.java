@@ -27,4 +27,4 @@ public record RegisterRequest (
 
 //        @NotNull(message = "O campo role é obrigatório")
 //        Role role
-) implements Serializable { }
+) { }

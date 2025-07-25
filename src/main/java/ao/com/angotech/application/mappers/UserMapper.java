@@ -24,6 +24,7 @@ public class UserMapper {
     public RegisterResponse toResponse(User user) {
 
         return new RegisterResponse(
+                user.getId(),
                 user.getName(),
                 user.getEmail()
         );
