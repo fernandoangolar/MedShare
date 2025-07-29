@@ -53,7 +53,7 @@ public class RegisterServiceTest {
         );
         user = new User();
 
-        response = new RegisterResponse("Fernando", "fernando@gmail.com");
+        response = new RegisterResponse("", "Fernando", "fernando@gmail.com");
     }
 
     @Test

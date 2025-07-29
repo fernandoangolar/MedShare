@@ -2,7 +2,7 @@ package ao.com.angotech.angotech.controller;
 
 import ao.com.angotech.application.controllers.AuthController;
 import ao.com.angotech.application.dtos.auth.RegisterRequest;
-import ao.com.angotech.application.mappers.UserMapper;
+import ao.com.angotech.application.usecases.auth.AuthenticationUseCase;
 import ao.com.angotech.application.usecases.auth.RegisterUserUseCase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(AuthController.class)
-public class AuthControllerValidationTest {
+public class RegisterControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,11 +41,14 @@ public class AuthControllerValidationTest {
     @MockitoBean
     private RegisterUserUseCase registerUserUseCase;
 
+    @MockitoBean
+    private AuthenticationUseCase authenticationUseCase;
+
     @Test
     void deveRejeitarNomeVazioOUCurto() throws Exception {
-        RegisterRequest request = new RegisterRequest("", "teste@email.com", "Senha1", "USER");
+        RegisterRequest request = new RegisterRequest("", "teste@email.com", "Senha1", "PATIENT");
 
-        mockMvc.perform(post("/auth/register")
+        mockMvc.perform(post("/api/v1/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().is(422))
@@ -56,9 +58,9 @@ public class AuthControllerValidationTest {
 
     @Test
     void deveRejeitarEmailInvalido() throws Exception {
-        RegisterRequest request = new RegisterRequest("Teste", "teste@email", "Senha1", "USER");
+        RegisterRequest request = new RegisterRequest("Teste", "teste@email", "Senha1", "PATIENT");
 
-        mockMvc.perform(post("/auth/register")
+        mockMvc.perform(post("/api/v1/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().is(422))
@@ -68,9 +70,9 @@ public class AuthControllerValidationTest {
 
     @Test
     void deveRejeitarSenhaFraca() throws Exception {
-        RegisterRequest request = new RegisterRequest("Teste", "teste@email.com", "123456", "USER");
+        RegisterRequest request = new RegisterRequest("Teste", "teste@email.com", "123456", "PATIENT");
 
-        mockMvc.perform(post("/auth/register")
+        mockMvc.perform(post("/api/v1/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().is(422))
@@ -80,9 +82,9 @@ public class AuthControllerValidationTest {
 
     @Test
     void deveRejeitarSenhaCurta() throws Exception {
-        RegisterRequest request = new RegisterRequest("Teste", "teste@email.com", "12345", "USER");
+        RegisterRequest request = new RegisterRequest("Teste", "teste@email.com", "12345", "PATIENT");
 
-        mockMvc.perform(post("/auth/register")
+        mockMvc.perform(post("/api/v1/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().is(422))
@@ -93,7 +95,7 @@ public class AuthControllerValidationTest {
     @Test
     void deveRejeitarRoleNulo() throws Exception {
         RegisterRequest request = new RegisterRequest("Joao", "joao@email.com", "Senha1", "USER");
-        mockMvc.perform(post("/auth/register")
+        mockMvc.perform(post("/api/v1/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().is(422))

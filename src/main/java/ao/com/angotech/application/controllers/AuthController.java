@@ -36,6 +36,22 @@ public class AuthController {
     @Autowired
     private AuthenticationUseCase authenticationUseCase;
 
+    @Operation(summary = "Autenticar na API", description = "Recurso de autenticação na API",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Autenticação realizada com sucesso e retorno de um bearer token",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))
+            ),
+                @ApiResponse(responseCode = "400", description = "Credenciais inválidas",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))
+                ),
+                @ApiResponse(responseCode = "422", description = "Compo(s) Inválido(s)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))
+                ),
+                @ApiResponse(responseCode = "500", description = "Interbal server error",
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))
+                )
+        }
+    )
     @PostMapping("/auth")
     public ResponseEntity<?> authentication(@Valid @RequestBody LoginRequest request, HttpServletRequest httpRequest) {
         logger.info("Processo de autenticação pelo login {}", request.email());
